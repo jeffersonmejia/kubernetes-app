@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: distributed-app-reto2-stable
+  labels:
+    app: distributed-app-reto2
+    track: stable
+spec:
+  # RETO 2: cuatro réplicas estables frente a una réplica canary (aprox. 80/20).
+  replicas: 4
+  selector:
+    matchLabels:
+      app: distributed-app-reto2
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: distributed-app-reto2
+        track: stable
+    spec:
+      containers:
+        - name: app
+          image: docker.io/library/distributed-app-reto2:stable
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APP_VERSION
+              value: "v1"
+            - name: APP_MESSAGE
+              value: "Versión estable: recibe la mayor parte del tráfico"
+          ports:
+            - name: http
+              containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10

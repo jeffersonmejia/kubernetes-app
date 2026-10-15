@@ -1,0 +1,15 @@
+apiVersion: v1
+# RETO 1: un Service headless publica los pods en DNS, en vez de ocultarlos tras una sola IP virtual.
+kind: Service
+metadata:
+  name: distributed-app-peers
+spec:
+  # RETO 1: habilita respuestas DNS con los endpoints individuales.
+  clusterIP: None
+  selector:
+    app: distributed-app
+  ports:
+    # RETO 1: el puerto nombrado genera los registros SRV que consulta index.js.
+    - name: http
+      port: 3000
+      targetPort: http

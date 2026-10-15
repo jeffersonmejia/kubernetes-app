@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: distributed-app-reto2-service
+spec:
+  type: NodePort
+  # RETO 2: selector compartido entre stable y canary; Kubernetes distribuye
+  # aproximadamente 1/5 de las conexiones al único pod canary y 4/5 a stable.
+  selector:
+    app: distributed-app-reto2
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+      nodePort: 30082
