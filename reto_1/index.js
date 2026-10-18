@@ -56,7 +56,7 @@ function isThisPod(record) {
   return record.name.split('.')[0] === POD_NAME;
 }
 
-// RETO 1: verifica mediante HTTP que cada par descubierto responde en /health.
+// verifica mediante HTTP que cada par descubierto responde en /health.
 async function inspectPeer(record) {
   const host = record.name.replace(/\.$/, '');
   const peer = {
@@ -80,7 +80,7 @@ async function inspectPeer(record) {
   return peer;
 }
 
-// RETO 1: consulta _http._tcp.<service> y contacta los pods encontrados, excepto a este mismo.
+//consulta _http._tcp.<service> y contacta los pods encontrados, excepto a este mismo.
 async function discoverPeers() {
   if (!PEERS_DNS || discoveryRunning) return;
   discoveryRunning = true;

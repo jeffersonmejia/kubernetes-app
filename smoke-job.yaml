@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: distributed-app-smoke
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: k6
+          image: grafana/k6:latest
+          args:
+            - run
+            - /scripts/smoke-test.js
+          env:
+            - name: TARGET_URL
+              value: http://distributed-app-service.default.svc.cluster.local/api/info
+          volumeMounts:
+            - name: smoke-script
+              mountPath: /scripts
+              readOnly: true
+      volumes:
+        - name: smoke-script
+          configMap:
+            name: distributed-app-smoke-script

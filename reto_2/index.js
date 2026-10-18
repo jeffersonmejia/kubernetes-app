@@ -1,15 +1,14 @@
-// RETO 2: la misma aplicación puede identificarse como versión estable o canary
-// mediante variables de entorno distintas en cada Deployment.
+// Título: Aplicación web instrumentada para una demostración de despliegue canary.
+// Descripción: Este servidor Node.js ofrece la misma funcionalidad a las variantes estable y candidata, y obtiene su identidad de las variables APP_VERSION y APP_MESSAGE que Kubernetes define en cada Deployment. El endpoint /api/info informa la versión, el mensaje, el nombre del pod, el contador local y la hora de respuesta; la página principal muestra esos datos y permite generar una solicitud adicional. Así, al enviar tráfico al Service compartido, se puede reconocer qué variante atendió cada solicitud y observar el comportamiento del despliegue sin duplicar la aplicación.
 const http = require('http');
 const os = require('os');
 const { URL } = require('url');
 
 const PORT = process.env.PORT || 3000;
-// === Código 01. Identificación de las variantes stable y canary ===
-// Kubernetes inyecta valores distintos para que cada Deployment identifique la versión que atiende.
+// Descripción: este bloque permite que una sola aplicación represente las variantes estable y canary. Kubernetes asigna APP_VERSION y APP_MESSAGE con valores distintos en cada Deployment; la función info incorpora esos valores junto con el nombre del pod, el contador local y la hora para que las respuestas permitan identificar qué instancia atendió la solicitud.
+// INICIO DEL CÓDIGO CANARY QUE SE DEBE COPIAR
 const APP_VERSION = process.env.APP_VERSION || 'v1';
 const APP_MESSAGE = process.env.APP_MESSAGE || 'Versión estable';
-// === Fin del Código 01 ===
 let localCounter = 0;
 
 function commonHeaders(contentType = 'text/html; charset=utf-8') {
@@ -29,6 +28,7 @@ function info() {
     time: new Date().toISOString()
   };
 }
+// FIN DEL CÓDIGO CANARY QUE SE DEBE COPIAR
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
@@ -56,10 +56,8 @@ const server = http.createServer((req, res) => {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- === Código 02. Versión de la aplicación en el título === -->
-  <!-- El título cambia según la versión configurada en el pod que responde. -->
+  <!-- Título: muestra que esta aplicación forma parte de la demostración de despliegue canary. -->
   <title>Canary Deployment ${data.version}</title>
-  <!-- === Fin del Código 02 === -->
   <style>
     body { font-family: Arial, sans-serif; max-width: 760px; margin: 50px auto; padding: 0 20px; background: #f4f6f8; }
     .card { background: white; border-radius: 14px; padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,.08); }
@@ -71,10 +69,8 @@ const server = http.createServer((req, res) => {
 </head>
 <body>
   <div class="card">
-    <!-- === Código 03. Identificación visual del reto === -->
-    <!-- Señala en la página que esta instancia forma parte de la demostración canary. -->
+    <!-- Descripción: permite comparar la versión estable y la canary según el pod que responde. -->
     <h1>Canary Deployment</h1>
-    <!-- === Fin del Código 03 === -->
     <p>${data.message}</p>
     <p>Versión: <span class="value">${data.version}</span></p>
     <p>Servidor / Pod: <code>${data.pod}</code></p>

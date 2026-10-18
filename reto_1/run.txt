@@ -1,2 +1,0 @@
-.\run.ps1
-kubectl port-forward service/distributed-app-service 30080:80

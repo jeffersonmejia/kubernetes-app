@@ -1,11 +1,12 @@
+# Título: Service compartido para las variantes estable y canary.
+# Descripción: En este código se observa que el Service selecciona todos los pods etiquetados como distributed-app-reto2, tanto los estables como los canary, y expone un punto de acceso común. El puerto 80 recibe las solicitudes dentro del clúster y las dirige al puerto 3000 de los contenedores; el NodePort 30082 permite acceder desde el equipo local. Al compartir el selector, Kubernetes mantiene ambos tipos de pods como endpoints disponibles. Con cuatro réplicas estables y una canary se espera una distribución aproximada de conexiones de 80/20, aunque Kubernetes no garantiza ese porcentaje en cada solicitud.
 apiVersion: v1
 kind: Service
 metadata:
   name: distributed-app-reto2-service
 spec:
   type: NodePort
-  # RETO 2: selector compartido entre stable y canary; Kubernetes distribuye
-  # aproximadamente 1/5 de las conexiones al único pod canary y 4/5 a stable.
+  # INICIO DEL FRAGMENTO DEL SERVICE QUE SE DEBE COPIAR
   selector:
     app: distributed-app-reto2
   ports:
@@ -13,3 +14,4 @@ spec:
       port: 80
       targetPort: 3000
       nodePort: 30082
+  # FIN DEL FRAGMENTO DEL SERVICE QUE SE DEBE COPIAR

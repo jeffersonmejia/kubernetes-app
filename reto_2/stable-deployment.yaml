@@ -1,3 +1,5 @@
+# Título: Deployment de la versión estable.
+# Descripción: En este código se observa que el Deployment conserva cuatro réplicas de la versión estable v1, identificadas con las etiquetas app=distributed-app-reto2 y track=stable. La imagen y las variables de entorno indican a la aplicación qué versión y mensaje debe mostrar; las etiquetas hacen posible que el Service compartido encuentre estos pods junto con los de la variante canary. Las comprobaciones readiness y liveness consultan /health para controlar disponibilidad y reiniciar contenedores que fallen. La cantidad de réplicas establece una proporción orientativa de cuatro pods estables por cada pod canary, no una garantía de tráfico por petición.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,8 +7,8 @@ metadata:
   labels:
     app: distributed-app-reto2
     track: stable
+# INICIO DEL FRAGMENTO DEL DEPLOYMENT ESTABLE QUE SE DEBE COPIAR
 spec:
-  # RETO 2: cuatro réplicas estables frente a una réplica canary (aprox. 80/20).
   replicas: 4
   selector:
     matchLabels:
@@ -42,3 +44,4 @@ spec:
               port: http
             initialDelaySeconds: 5
             periodSeconds: 10
+# FIN DEL FRAGMENTO DEL DEPLOYMENT ESTABLE QUE SE DEBE COPIAR

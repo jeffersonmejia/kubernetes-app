@@ -1,3 +1,5 @@
+# Título: Deployment de la versión candidata (canary).
+# Descripción: Este manifiesto define el grupo de pods que ejecuta la versión candidata de la aplicación y limita inicialmente su presencia a una réplica, frente a las cuatro réplicas estables. Las etiquetas identifican inequívocamente esta variante, mientras que APP_VERSION y APP_MESSAGE hacen que la aplicación informe que responde como v2-canary. Las comprobaciones de readiness y liveness consultan /health para que Kubernetes incorpore al tráfico solo pods disponibles y reinicie aquellos que dejen de responder correctamente.
 apiVersion: apps/v1
 kind: Deployment
 metadata:

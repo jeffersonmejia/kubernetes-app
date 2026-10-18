@@ -1,2 +1,0 @@
-.\run.ps1
-.\test-canary.ps1

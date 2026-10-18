@@ -7,7 +7,7 @@ const { URL } = require('url');
 // === Código 02. Configuración de la aplicación ===
 // === Descripción: Se define el puerto, la versión y el mensaje que identifican esta instancia de la aplicación. ===
 const PORT = process.env.PORT || 3000;
-const APP_VERSION = 'v2';
+const APP_VERSION = 'v99';
 const APP_MESSAGE = 'Segunda versión desplegada con Rolling Update'
 
 // === Código 03. Contador local ===

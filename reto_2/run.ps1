@@ -1,3 +1,6 @@
+# Título: Construcción y despliegue local de la demostración canary.
+# Descripción: En este código se observa el flujo completo que prepara el entorno canary: el script construye la aplicación una sola vez, crea etiquetas stable y canary para esa imagen y las importa en cada nodo del clúster local, ya que Kubernetes no necesariamente comparte el almacén local de Docker. Luego aplica el Service y los manifiestos de ambas variantes, espera a que los dos Deployments estén listos y muestra los pods y endpoints registrados. Finalmente indica cómo acceder al servicio para consultar las respuestas. El script detiene el proceso si falla una etapa crítica, de modo que no informa como exitoso un despliegue incompleto.
+# INICIO DEL FRAGMENTO DE CONSTRUCCIÓN Y DESPLIEGUE QUE SE DEBE COPIAR
 $ErrorActionPreference = 'Stop'
 Set-Location -LiteralPath $PSScriptRoot
 
@@ -41,3 +44,4 @@ kubectl get pods -l app=distributed-app-reto2 -o wide
 kubectl get endpoints distributed-app-reto2-service
 Write-Host 'Para probar el reparto, abre otra PowerShell y ejecuta: kubectl port-forward service/distributed-app-reto2-service 30082:80'
 Write-Host 'Luego consulta http://localhost:30082/api/info varias veces'
+# FIN DEL FRAGMENTO DE CONSTRUCCIÓN Y DESPLIEGUE QUE SE DEBE COPIAR
